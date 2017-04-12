@@ -83,7 +83,7 @@ namespace Test.HtmlDiff
         [TestCase("This is a date 1 Jan 2016 that will change", 
             "This is a date 22 Feb 2017 that did change", 
             @"[\d]{1,2}[\s]*(Jan|Feb)[\s]*[\d]{4}",
-            "This is a date<del class='diffmod'> 1 Jan 2016</del><ins class='diffmod'> 22 Feb 2017</ins> that <del class='diffmod'>will</del><ins class='diffmod'>did</ins> change")]
+            "This is a date<del class=' diffmod'> 1 Jan 2016</del><ins class='diffmod'> 22 Feb 2017</ins> that <del class='diffmod'>will</del><ins class='diffmod'>did</ins> change")]
 
         [TestCase("This is a date 1 Jan 2016 that will change",
             "This is a date 22 Feb 2017 that won't change",
@@ -105,12 +105,12 @@ namespace Test.HtmlDiff
         [Test]
         public void Execute_WithGroupCandididatesAndDuplicateGroupsConfigured_ArgumentExceptionThrown()
         {
-            string oldText = "This is a date 1 Jan 2016 that will change";
-            string newText = "This is a date 22 Feb 2017 that won't change";
+            string oldText = "This is a date Jan 1, 2016 that will change";
+            string newText = "This is a date Feb 22, 2017 that won't change";
             var diff = new global::HtmlDiff.HtmlDiff(oldText, newText);
 
             // purposefully cause an overlapping expression
-            var pattern = @"[\d]{1,2}[\s]*(Jan|Feb)[\s]*[\d]{4}";
+            var pattern = @"(Jan|Feb)[\s]*[\d]{1,2}[\s]*[\d]{4}";
             diff.AddBlockExpression(new Regex(pattern));
             diff.AddBlockExpression(new Regex(pattern));
 
